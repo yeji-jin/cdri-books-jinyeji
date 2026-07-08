@@ -8,19 +8,64 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-noto-sans-kr);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* Design system palette */
+  --color-accent: #4880ee; 
+  --color-red: #e84118;
+  --color-gray: #dadada;
+  --color-light-gray: #f2f4f6;
+  --color-white: #ffffff;
+  --color-black: #222222;
+  --color-primary: #353c49;
+  --color-secondary: #6d7582;
+  --color-subtitle: #8d94a0;
+
+  --animate-loading-bar: loading-bar 1s ease-in-out infinite;
+
+   --text-title-1: 1.5rem; /* 24px */
+   --text-title-1--line-height: 1.5; 
+   --text-title-1--font-weight: 700;
+ 
+   --text-title-2: 1.375rem; /* 22px */
+   --text-title-2--line-height: 1.5; 
+   --text-title-2--font-weight: 700;
+ 
+   --text-title-3: 1.125rem; /* 18px */
+   --text-title-3--line-height: 1.5; 
+   --text-title-3--font-weight: 700;
+ 
+   --text-body-1: 1.25rem; /* 20px */
+   --text-body-1--line-height: 1.5; 
+ 
+   --text-body-2: 0.875rem; /* 14px */
+   --text-body-2--line-height: 1.5; 
+ 
+   --text-caption: 1rem; /* 16px */
+   --text-caption--line-height: 1.5; 
+   --text-caption--font-weight: 500; 
+ 
+   --text-small: 0.625rem; /* 10px */
+   --text-small--line-height: 1.5; 
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
 }
