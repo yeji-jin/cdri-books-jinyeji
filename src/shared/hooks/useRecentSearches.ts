@@ -10,6 +10,7 @@ export function useRecentSearches() {
   const [terms, setTerms] = useState<string[]>([]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTerms(readJSON(STORAGE_KEY, []));
   }, []);
 

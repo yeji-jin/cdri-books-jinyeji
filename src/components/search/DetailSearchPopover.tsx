@@ -50,7 +50,7 @@ export function DetailSearchPopover({ onClose, onSubmit }: DetailSearchPopoverPr
       </button>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 pt-2">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <Controller
             name="target"
             control={control}

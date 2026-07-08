@@ -38,9 +38,9 @@ export function Select({ value, onChange, options, className }: SelectProps) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1 py-2"
+        className="flex items-center gap-1 py-2 w-25 border-gray justify-between border-b"
       >
-        <Text as="span" variant="body-2">
+        <Text as="span" variant="body-2" className="font-bold">
           {selected?.label}
         </Text>
         <RiArrowDownSLine
@@ -49,7 +49,7 @@ export function Select({ value, onChange, options, className }: SelectProps) {
       </button>
 
       {open && (
-        <ul className="border-gray absolute top-full left-0 z-10 mt-2 w-28 overflow-hidden rounded-lg border bg-white py-1 shadow-lg">
+        <ul className="border-gray absolute top-full left-0 z-10 mt-2 w-25 overflow-hidden border bg-white py-1 shadow-lg">
           {options
             .filter((opt) => opt.value !== value)
             .map((opt) => (
@@ -60,9 +60,9 @@ export function Select({ value, onChange, options, className }: SelectProps) {
                     onChange(opt.value);
                     setOpen(false);
                   }}
-                  className="block w-full px-3 py-2 text-left"
+                  className="block w-full px-2 py-1 text-left"
                 >
-                  <Text as="span" variant="body-2" color="secondary">
+                  <Text as="span" variant="body-2" color="secondary" className="font-medium">
                     {opt.label}
                   </Text>
                 </button>

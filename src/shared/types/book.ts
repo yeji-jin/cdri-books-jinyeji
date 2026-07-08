@@ -39,17 +39,3 @@ export interface Book {
   price: number;
   salePrice: number;
 }
-
-export function toBook(doc: KakaoBookDocument): Book {
-  return {
-    isbn: doc.isbn,
-    title: doc.title,
-    authors: doc.authors,
-    publisher: doc.publisher,
-    contents: doc.contents,
-    url: doc.url,
-    thumbnailUrl: doc.thumbnail,
-    price: doc.price,
-    salePrice: doc.sale_price,
-  };
-}

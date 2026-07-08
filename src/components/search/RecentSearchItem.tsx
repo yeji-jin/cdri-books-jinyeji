@@ -12,11 +12,10 @@ export function RecentSearchItem({ term, onSelect, onRemove }: RecentSearchItemP
     <li className="flex items-center justify-between py-3">
       <button
         type="button"
-        // 클릭 시 input이 먼저 blur되어 목록이 사라지면서 클릭이 씹히는 것을 방지
         onMouseDown={(e) => e.preventDefault()}
         onClick={() => onSelect(term)}
       >
-        <Text as="span" variant="body-1" color="secondary">
+        <Text as="span" variant="caption" color="secondary">
           {term}
         </Text>
       </button>

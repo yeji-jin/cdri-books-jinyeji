@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import Image from "next/image";
 import { RiArrowDownSLine } from "@remixicon/react";
 import { LikeButton } from "./LikeButton";
@@ -28,7 +28,6 @@ const THUMBNAIL_CONFIG = {
   },
 };
 
-// collapsed/expanded 뷰에서 크기만 다르게 반복되던 썸네일+좋아요 버튼 블록을 하나로 뺐다.
 function BookThumbnail({ book, size }: { book: Book; size: keyof typeof THUMBNAIL_CONFIG }) {
   const config = THUMBNAIL_CONFIG[size];
 
@@ -52,7 +51,7 @@ function BookThumbnail({ book, size }: { book: Book; size: keyof typeof THUMBNAI
   );
 }
 
-export function BookListItem({ book }: { book: Book }) {
+export const BookListItem = memo(function BookListItem({ book }: { book: Book }) {
   const [expanded, setExpanded] = useState(false);
   const hasDiscount = book.salePrice > 0 && book.salePrice < book.price;
   const displayPrice = hasDiscount ? book.salePrice : book.price;
@@ -102,20 +101,20 @@ export function BookListItem({ book }: { book: Book }) {
 
               <div className="flex w-40 shrink-0 flex-col items-end justify-end gap-2">
                 {hasDiscount && (
-                  <div className="flex items-baseline gap-1">
-                    <Text as="span" variant="small" color="subtitle">
+                  <div className="flex items-center gap-2">
+                    <Text as="span" variant="small" color="subtitle" className="font-medium">
                       원가
                     </Text>
-                    <Text as="span" variant="body-2" color="secondary" className="line-through">
+                    <Text as="span" variant="title-3" color="secondary" className="line-through">
                       {formatPrice(book.price)}
                     </Text>
                   </div>
                 )}
-                <div className="flex items-baseline gap-1">
-                  <Text as="span" variant="small" color="subtitle">
+                <div className="flex items-center gap-2">
+                  <Text as="span" variant="small" color="subtitle" className="font-medium">
                     {hasDiscount ? "할인가" : "가격"}
                   </Text>
-                  <Text as="span" variant="body-2" bold>
+                  <Text as="span" variant="title-3" bold>
                     {formatPrice(displayPrice)}
                   </Text>
                 </div>
@@ -183,4 +182,4 @@ export function BookListItem({ book }: { book: Book }) {
       </div>
     </li>
   );
-}
+});

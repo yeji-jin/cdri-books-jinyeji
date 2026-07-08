@@ -76,7 +76,7 @@ export function SearchBar({
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             placeholder="검색어 입력"
-            className="text-body-1 text-primary placeholder:text-subtitle flex-1 bg-transparent outline-none"
+            className="text-body-1 text-primary placeholder:text-subtitle flex-1 bg-transparent placeholder:text-base placeholder:font-medium outline-none"
           />
         </div>
 

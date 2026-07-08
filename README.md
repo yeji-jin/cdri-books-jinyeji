@@ -26,15 +26,15 @@ npm run dev
 src/
 ├─ app/
 │  ├─ layout.tsx              # 전역 레이아웃 (Providers, GlobalHeader)
-│  ├─ search/                 # 도서 검색 페이지 (query/target/page를 URL과 동기화)
+│  ├─ search/                 # 도서 검색 페이지 (query/target을 URL과 동기화, 무한스크롤)
 │  ├─ liked/page.tsx          # 내가 찜한 책 페이지
 │  └─ api/books/route.ts      # 카카오 도서검색 API 서버사이드 프록시
 ├─ components/                 # 화면 전용 UI 컴포넌트 (도메인 로직 없음)
-│  ├─ ActionButton.tsx / Text.tsx / Select.tsx / Pagination.tsx  # 디자인 시스템 컴포넌트
+│  ├─ ActionButton.tsx / Text.tsx / Select.tsx  # 디자인 시스템 컴포넌트
 │  ├─ search/                 # SearchBar, DetailSearchPopover(react-hook-form+zod)
 │  └─ book/                   # BookList, BookListItem, LikeButton
 └─ shared/                     # 여러 화면이 공유하는 로직
-   ├─ hooks/useBookSearch.ts    # useQuery + keepPreviousData 페이지네이션 조회
+   ├─ hooks/useBookSearch.ts    # useInfiniteQuery 기반 무한스크롤 조회
    ├─ store/useLikedBooksStore.ts  # 찜하기 상태 (zustand + persist)
    ├─ types/book.ts             # 카카오 응답 타입 ↔ 도메인 타입(Book) 매핑
    └─ utils/                    # axios 인스턴스, 에러 메시지 변환, storage 래퍼 등
@@ -44,9 +44,9 @@ src/
 
 | 라이브러리                     | 선택 이유                                                                                                                                                                                                                                                            |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Next.js (App Router)**  | Next.js API Route를 사용해 카카오 API를 서버에서 호출하도록 구성했습니다. 브라우저는 내부 /api/books만 호출하고, REST API 키는 서버 환경변수에서만 사용하도록 하여 클라이언트에 노출되지 않도록 했습니다. 또한 검색어·상세검색 조건·페이지를 URL Search Params로 관리해 새로고침, 뒤로가기, 공유 시에도 동일한 검색 상태를 유지할 수 있었습니다.                                       |
+| **Next.js (App Router)**  | Next.js API Route를 사용해 카카오 API를 서버에서 호출하도록 구성했습니다. 브라우저는 내부 /api/books만 호출하고, REST API 키는 서버 환경변수에서만 사용하도록 하여 클라이언트에 노출되지 않도록 했습니다. 또한 검색어·상세검색 조건을 URL Search Params로 관리해 새로고침, 뒤로가기, 공유 시에도 동일한 검색 상태를 유지할 수 있었습니다.                                       |
 | **TypeScript**            | 컴포넌트 props, API 응답, 검색 조건, 전역 상태를 모두 타입으로 관리해 컴파일 단계에서 오류를 확인할 수 있도록 했습니다. API 응답은 프로젝트에서 사용하는 도메인 타입으로 변환해 화면에서는 일관된 타입만 사용하도록 구성했고, 공통 타입을 여러 컴포넌트와 훅에서 재사용해 유지보수가 쉬운 구조를 만들었습니다.                               |
-| **React Query**           | 서버에서 가져오는 데이터를 효율적으로 관리하기 위해 사용했습니다. 요청 결과를 캐싱해 동일한 요청에 대한 불필요한 API 호출을 줄이고, 로딩·에러 상태를 일관되게 관리할 수 있습니다. 이 프로젝트에서는 페이지 이동 시 이전 데이터를 유지해 화면이 깜빡이지 않도록 했고, QueryCache.onError를 활용해 모든 요청의 실패를 공통으로 처리했습니다. |
+| **React Query**           | 서버에서 가져오는 데이터를 효율적으로 관리하기 위해 사용했습니다. `useInfiniteQuery`로 무한스크롤 페이지들을 하나의 쿼리로 관리해 이미 불러온 목록은 유지한 채 다음 페이지만 이어붙이고, 중간 페이지 요청이 실패해도 이미 불러온 결과는 그대로 두고 재시도만 가능하도록 처리했습니다. `QueryCache.onError`로 모든 요청의 실패를 공통으로 처리했습니다. |
 | **Tailwind CSS**          | 디자인 목업의 컬러와 타이포그래피를 `@theme` 토큰으로 정의했습니다. `Text`, `ActionButton` 같은 공통 컴포넌트는 이 토큰만 조합해 사용하도록 구성해 화면마다 스타일이 달라지지 않도록 했고, 디자인 변경 시 토큰만 수정하면 전체 화면에 반영되도록 했습니다.                                                                      |
 | **react-hook-form + zod** | 입력 상태 관리와 검증을 분리하기 위해 적용했습니다. react-hook-form은 비제어 방식이라 입력 중 불필요한 리렌더를 줄이고, zod는 검색어 검증을 담당하며 타입도 함께 관리해 별도의 validation 로직을 작성하지 않도록 했습니다.                                                                                             |
 | **@hookform/resolvers**   | react-hook-form과 zod를 연결하기 위해 사용했습니다. zod 스키마를 그대로 검증 규칙으로 사용할 수 있어 폼 검증 로직을 중복 작성하지 않고 타입과 검증 기준을 하나로 관리했습니다.                                                                                                                                                   |
@@ -59,8 +59,7 @@ src/
 
 ## 강조하고 싶은 기능
 
-- **디자인 시스템 적용**: `Text`, `ActionButton`, `Select` 등 공통 컴포넌트를 variant 기반으로 설계해 일관된 UI를 유지하고 재사용성을 높였습니다.
-- **재사용 가능한 컴포넌트 설계**: `Text`, `ActionButton`, `Select`, `Pagination`을 공통 컴포넌트로 구현했습니다. `BookList`와 `LikeButton`도 검색 페이지와 찜한 책 페이지에서 동일하게 재사용해 UI 중복을 최소화했습니다.
+- **재사용 가능한 디자인 시스템 컴포넌트**: `Text`, `ActionButton`, `Select` 등을 variant 기반으로 설계해 일관된 UI를 유지했습니다. `BookList`와 `LikeButton`도 검색 페이지와 찜한 책 페이지에서 동일하게 재사용해 UI 중복을 최소화했습니다. `GlobalLoadingBar`는 `Providers`에 한 번만 마운트해 어떤 화면에서 어떤 요청이 진행 중이든 각 페이지가 로딩 상태를 직접 넘겨줄 필요 없이 자동으로 표시되고, `EmptyState`는 검색 결과 없음/찜한 책 없음 등 빈 목록을 보여줘야 하는 모든 곳에서 메시지만 바꿔 재사용합니다.
 
 - **API 키 보안**: 카카오 REST API 키는 서버 환경변수에서만 관리하고, 프론트엔드는 내부 `/api/books`만 호출하도록 구성했습니다.
 
@@ -68,6 +67,13 @@ src/
 
 - **찜하기 리렌더 최적화**: Zustand selector를 사용해 변경된 책의 `LikeButton`만 리렌더되도록 구현했습니다.
 
-- **검색 상태의 URL 동기화**: 검색어, 상세검색 조건, 페이지를 URL Search Params로 관리해 새로고침·뒤로가기·공유 시에도 동일한 검색 상태를 유지합니다.
+- **검색 상태의 URL 동기화**: 검색어와 상세검색 조건을 URL Search Params로 관리해 새로고침·뒤로가기·공유 시에도 동일한 검색 상태를 유지합니다.
 
-- **번호 페이지네이션**: 현재 페이지에 따라 말줄임표(`...`)를 포함한 페이지 번호를 자동 계산해 표시합니다.
+- **무한스크롤 + 에러 복구**: 목록 하단에 도달하면 `IntersectionObserver`로 다음 페이지를 자동으로 불러옵니다. 중간에 요청이 실패해도 이미 불러온 목록은 그대로 두고, 하단에 에러 메시지와 재시도 버튼만 표시해 처음부터 다시 스크롤할 필요가 없습니다. 찜한 책 목록도 같은 방식으로 스크롤할 때마다 렌더 개수만 늘립니다(이미 메모리에 있는 데이터라 API 호출은 없습니다).
+
+<details>
+<summary id="상세검색-재필터링-상세">상세검색 재필터링 상세 예시</summary>
+
+`target=person`으로 "김기수"를 검색하면 카카오 API가 저자가 전혀 다른 책까지 섞어서 반환합니다(예: 772건 중 실제 저자가 "김기수"인 책은 1건). `app/api/books/route.ts`에서 `target`이 지정되면 카카오 응답을 받은 뒤 해당 필드에 검색어가 실제로 포함된 문서만 서버에서 한 번 더 거릅니다. 이때 공백은 무시하고 비교합니다("클린코드"로 검색해도 실제 제목 "클린 코드"와 매치).
+
+</details>
