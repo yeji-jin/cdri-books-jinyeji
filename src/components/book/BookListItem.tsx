@@ -99,7 +99,7 @@ export const BookListItem = memo(function BookListItem({ book }: { book: Book })
                 </Text>
               </div>
 
-              <div className="flex w-40 shrink-0 flex-col items-end justify-end gap-2">
+              <div className="flex w-[40%] shrink-0 flex-col items-end justify-end gap-2">
                 {hasDiscount && (
                   <div className="flex items-center gap-2">
                     <Text as="span" variant="small" color="subtitle" className="font-medium">
