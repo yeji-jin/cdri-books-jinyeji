@@ -26,7 +26,7 @@ export function RecentSearchItem({ term, onSelect, onRemove }: RecentSearchItemP
         aria-label={`${term} 검색기록 삭제`}
         className="text-primary"
       >
-        <RiCloseLine className="h-5 w-5" />
+        <RiCloseLine aria-hidden="true" className="h-5 w-5" />
       </button>
     </li>
   );

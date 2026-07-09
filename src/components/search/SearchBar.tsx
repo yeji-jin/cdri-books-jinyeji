@@ -64,8 +64,10 @@ export function SearchBar({
     <div className="flex gap-4 items-center">
       <div className={`bg-light-gray relative flex-1 ${showRecentSearches ? "rounded-t-4xl" : "rounded-4xl"} px-5 py-3`}>
         <div className="flex items-center gap-3">
-          <RiSearchLine className="text-primary h-5 w-5 shrink-0" />
+          <RiSearchLine aria-hidden="true" className="text-primary h-5 w-5 shrink-0" />
           <input
+            type="search"
+            aria-label="검색어 입력"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={(e) => {
@@ -97,6 +99,9 @@ export function SearchBar({
           title="상세검색"
           variant="outline"
           size="small"
+          aria-haspopup="dialog"
+          aria-expanded={detailOpen}
+          aria-controls="detail-search-popover"
           onClick={() => setDetailOpen((prev) => !prev)}
         />
 

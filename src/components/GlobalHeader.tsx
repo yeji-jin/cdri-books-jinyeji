@@ -17,7 +17,9 @@ export function GlobalHeader() {
     <header className="border-gray border-b bg-white">
       <div className="mx-auto flex h-16 max-w-5xl items-center px-6">
         <Link href="/search">
-          <Text variant="title-1">CERTICOS BOOKS</Text>
+          <Text as="span" variant="title-1">
+            CERTICOS BOOKS
+          </Text>
         </Link>
         <nav className="mx-auto flex items-center gap-8">
           {NAV_ITEMS.map((item) => {

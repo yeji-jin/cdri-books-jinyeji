@@ -80,8 +80,9 @@ export const BookListItem = memo(function BookListItem({ book }: { book: Book })
                 variant="secondary"
                 size="medium"
                 className="shrink-0"
+                aria-expanded={expanded}
                 onClick={toggle}
-                trailingIcon={<RiArrowDownSLine className="h-4 w-4 rotate-180" />}
+                trailingIcon={<RiArrowDownSLine aria-hidden="true" className="h-4 w-4 rotate-180" />}
               />
             </div>
 
@@ -175,8 +176,9 @@ export const BookListItem = memo(function BookListItem({ book }: { book: Book })
             variant="secondary"
             size="medium"
             className="shrink-0"
+            aria-expanded={expanded}
             onClick={toggle}
-            trailingIcon={<RiArrowDownSLine className="h-4 w-4" />}
+            trailingIcon={<RiArrowDownSLine aria-hidden="true" className="h-4 w-4" />}
           />
         </div>
       </div>

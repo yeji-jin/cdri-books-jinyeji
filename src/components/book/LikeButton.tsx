@@ -27,7 +27,7 @@ export function LikeButton({ book, size = "md" }: LikeButtonProps) {
       onClick={() => toggleLike(book)}
       className="text-red"
     >
-      <Icon className={ICON_SIZE[size]} />
+      <Icon aria-hidden="true" className={ICON_SIZE[size]} />
     </button>
   );
 }

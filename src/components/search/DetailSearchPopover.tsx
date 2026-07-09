@@ -39,14 +39,19 @@ export function DetailSearchPopover({ onClose, onSubmit }: DetailSearchPopoverPr
   });
 
   return (
-    <div className="border-gray absolute top-full right-0 z-10 mt-3 w-72 rounded-lg border bg-white p-4 shadow-lg">
+    <div
+      id="detail-search-popover"
+      role="dialog"
+      aria-label="상세검색"
+      className="border-gray absolute top-full right-0 z-10 mt-3 w-72 rounded-lg border bg-white p-4 shadow-lg"
+    >
       <button
         type="button"
         onClick={onClose}
         aria-label="상세검색 닫기"
         className="text-subtitle absolute top-3 right-3"
       >
-        <RiCloseLine className="h-5 w-5" />
+        <RiCloseLine aria-hidden="true" className="h-5 w-5" />
       </button>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 pt-2">
@@ -55,18 +60,26 @@ export function DetailSearchPopover({ onClose, onSubmit }: DetailSearchPopoverPr
             name="target"
             control={control}
             render={({ field }) => (
-              <Select value={field.value} onChange={field.onChange} options={TARGET_OPTIONS} />
+              <Select
+                value={field.value}
+                onChange={field.onChange}
+                options={TARGET_OPTIONS}
+                label="검색 대상"
+              />
             )}
           />
           <input
             {...register("keyword")}
             placeholder="검색어 입력"
+            aria-label="검색어 입력"
+            aria-invalid={Boolean(errors.keyword)}
+            aria-describedby={errors.keyword ? "detail-search-keyword-error" : undefined}
             className="border-gray text-body-2 text-primary flex-1 border-b px-1 py-2 outline-none"
           />
         </div>
 
         {errors.keyword && (
-          <Text variant="caption" color="error">
+          <Text id="detail-search-keyword-error" variant="caption" color="error">
             {errors.keyword.message}
           </Text>
         )}

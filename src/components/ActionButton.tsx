@@ -1,11 +1,11 @@
-import type { ReactNode } from "react";
+import type { AriaAttributes, ReactNode } from "react";
 import { Text } from "@/components/Text";
 import { cn } from "@/shared/utils/cn";
 
 type ActionButtonSize = "small" | "medium" | "large";
 type ActionButtonVariant = "primary" | "secondary" | "outline";
 
-interface ActionButtonProps {
+interface ActionButtonProps extends AriaAttributes {
   title: string;
   size?: ActionButtonSize;
   variant?: ActionButtonVariant;
@@ -14,6 +14,7 @@ interface ActionButtonProps {
   fullWidth?: boolean;
   disabled?: boolean;
   className?: string;
+  id?: string;
   href?: string;
   target?: string;
   rel?: string;
@@ -48,11 +49,13 @@ export function ActionButton({
   fullWidth,
   disabled = false,
   className,
+  id,
   href,
   target,
   rel,
   type = "button",
   onClick,
+  ...aria
 }: ActionButtonProps) {
   const classes = cn(
     "inline-flex items-center justify-center rounded-lg transition-colors",
@@ -71,7 +74,7 @@ export function ActionButton({
 
   if (href && !disabled) {
     return (
-      <a href={href} target={target} rel={rel} className={classes}>
+      <a id={id} href={href} target={target} rel={rel} className={classes} {...aria}>
         {leadingIcon}
         {label}
         {trailingIcon}
@@ -80,7 +83,7 @@ export function ActionButton({
   }
 
   return (
-    <button type={type} onClick={onClick} disabled={disabled} className={classes}>
+    <button id={id} type={type} onClick={onClick} disabled={disabled} className={classes} {...aria}>
       {leadingIcon}
       {label}
       {trailingIcon}

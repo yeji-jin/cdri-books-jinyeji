@@ -1,6 +1,6 @@
 function BookListItemSkeleton() {
   return (
-    <li className="border-gray flex items-center gap-4 border-b py-4">
+    <li aria-hidden="true" className="border-gray flex items-center gap-4 border-b py-4">
       <div className="bg-light-gray h-16 w-12 shrink-0 animate-pulse rounded" />
 
       <div className="flex-1 space-y-2">
@@ -17,10 +17,12 @@ function BookListItemSkeleton() {
 
 export function BookListSkeleton({ count = 5 }: { count?: number }) {
   return (
-    <ul aria-label="검색 결과를 불러오는 중">
-      {Array.from({ length: count }, (_, index) => (
-        <BookListItemSkeleton key={index} />
-      ))}
-    </ul>
+    <div role="status" aria-label="검색 결과를 불러오는 중">
+      <ul>
+        {Array.from({ length: count }, (_, index) => (
+          <BookListItemSkeleton key={index} />
+        ))}
+      </ul>
+    </div>
   );
 }

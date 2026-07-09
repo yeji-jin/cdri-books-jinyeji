@@ -11,6 +11,7 @@ interface TextProps {
   bold?: boolean;
   as?: ElementType;
   className?: string;
+  id?: string;
   children: ReactNode;
 }
 
@@ -45,11 +46,12 @@ const COLOR_STYLES: Record<TextColor, string> = {
   inherit: "",
 };
 
-export function Text({ variant, color = "black", bold, as, className, children }: TextProps) {
+export function Text({ variant, color = "black", bold, as, className, id, children }: TextProps) {
   const Component = as ?? DEFAULT_ELEMENT[variant];
 
   return (
     <Component
+      id={id}
       className={cn(VARIANT_STYLES[variant], COLOR_STYLES[color], bold && "font-bold", className)}
     >
       {children}
