@@ -100,6 +100,7 @@ export function SearchPageClient() {
             totalCount={totalCount}
             countLabel="도서 검색 결과"
             emptyMessage="검색된 결과가 없습니다."
+            highlightKeyword={keyword}
           />
 
           {isFetchingNextPage && <BookListSkeleton count={3} />}

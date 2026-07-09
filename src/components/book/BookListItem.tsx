@@ -5,6 +5,7 @@ import Image from "next/image";
 import { RiArrowDownSLine } from "@remixicon/react";
 import { LikeButton } from "./LikeButton";
 import { ActionButton } from "@/components/ActionButton";
+import { HighlightedText } from "@/components/HighlightedText";
 import { Text } from "@/components/Text";
 import { formatPrice } from "@/shared/utils/format";
 import type { Book } from "@/shared/types/book";
@@ -22,7 +23,7 @@ const THUMBNAIL_CONFIG = {
     width: 210,
     height: 280,
     imageClassName: "rounded object-cover",
-    fallbackClassName: "bg-gray h-40 w-28 rounded",
+    fallbackClassName: "bg-gray h-[280px] w-[210px] rounded",
     likeButtonClassName: "absolute top-2 right-2",
     likeButtonSize: "md" as const,
   },
@@ -51,7 +52,15 @@ function BookThumbnail({ book, size }: { book: Book; size: keyof typeof THUMBNAI
   );
 }
 
-export const BookListItem = memo(function BookListItem({ book }: { book: Book }) {
+interface BookListItemProps {
+  book: Book;
+  highlightKeyword?: string;
+}
+
+export const BookListItem = memo(function BookListItem({
+  book,
+  highlightKeyword,
+}: BookListItemProps) {
   const [expanded, setExpanded] = useState(false);
   const hasDiscount = book.salePrice > 0 && book.salePrice < book.price;
   const displayPrice = hasDiscount ? book.salePrice : book.price;
@@ -68,10 +77,12 @@ export const BookListItem = memo(function BookListItem({ book }: { book: Book })
 
           <div className="flex flex-1 flex-col gap-2">
             <div className="flex items-start justify-between gap-4">
-              <Text variant="title-3" className="flex items-center gap-4">
-                {book.title}
+              <Text variant="title-3" className="flex items-center gap-x-4 flex-wrap gap-y-2">
+                <span>
+                  <HighlightedText text={book.title} query={highlightKeyword} />
+                </span>
                 <Text as="span" variant="body-2" color="secondary">
-                  {book.authors.join(", ")}
+                  <HighlightedText text={book.authors.join(", ")} query={highlightKeyword} />
                 </Text>
               </Text>
 
@@ -147,10 +158,10 @@ export const BookListItem = memo(function BookListItem({ book }: { book: Book })
           {/* book details */}
           <div className="flex min-w-0 flex-1 items-baseline gap-4">
             <Text as="span" variant="body-1" bold className="min-w-0 truncate">
-              {book.title}
+              <HighlightedText text={book.title} query={highlightKeyword} />
             </Text>
             <Text as="span" variant="body-2" color="secondary" className="min-w-0 truncate">
-              {book.authors.join(", ")}
+              <HighlightedText text={book.authors.join(", ")} query={highlightKeyword} />
             </Text>
           </div>
           <Text variant="body-1" bold className="shrink-0">

@@ -8,9 +8,16 @@ interface BookListProps {
   totalCount: number;
   countLabel: string;
   emptyMessage: string;
+  highlightKeyword?: string;
 }
 
-export function BookList({ books, totalCount, countLabel, emptyMessage }: BookListProps) {
+export function BookList({
+  books,
+  totalCount,
+  countLabel,
+  emptyMessage,
+  highlightKeyword,
+}: BookListProps) {
   return (
     <div>
       <Text variant="body-2" color="secondary" className="mb-6 w-full max-w-3xl">
@@ -26,7 +33,7 @@ export function BookList({ books, totalCount, countLabel, emptyMessage }: BookLi
       ) : (
         <ul>
           {books.map((book) => (
-            <BookListItem key={book.isbn} book={book} />
+            <BookListItem key={book.isbn} book={book} highlightKeyword={highlightKeyword} />
           ))}
         </ul>
       )}
