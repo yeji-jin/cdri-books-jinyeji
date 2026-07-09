@@ -13,7 +13,7 @@
 
 ```bash
 npm install
-echo "KAKAO_REST_API_KEY=발급받은키" > .env.local
+echo "KAKAO_REST_API_KEY=발급받은키" > .env
 npm run dev
 ```
 
