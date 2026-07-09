@@ -36,8 +36,8 @@ src/
 └─ shared/                     # 여러 화면이 공유하는 로직
    ├─ hooks/useBookSearch.ts    # useInfiniteQuery 기반 무한스크롤 조회
    ├─ store/useLikedBooksStore.ts  # 찜하기 상태 (zustand + persist)
-   ├─ types/book.ts             # 카카오 응답 타입 ↔ 도메인 타입(Book) 매핑
-   └─ utils/                    # axios 인스턴스, 에러 메시지 변환, storage 래퍼 등
+   ├─ types/book.ts             # 카카오 응답 타입 / 도메인 타입(Book) 선언
+   └─ utils/                    # axios 인스턴스, 카카오 응답 → Book 매핑, 에러 메시지 변환, storage 래퍼 등
 ```
 
 ## 라이브러리 선택 이유
@@ -76,6 +76,6 @@ src/
 <details>
 <summary id="상세검색-재필터링-상세">상세검색 재필터링 상세 예시</summary>
 
-`target=person`으로 "김기수"를 검색하면 카카오 API가 저자가 전혀 다른 책까지 섞어서 반환합니다(예: 772건 중 실제 저자가 "김기수"인 책은 1건). `app/api/books/route.ts`에서 `target`이 지정되면 카카오 응답을 받은 뒤 해당 필드에 검색어가 실제로 포함된 문서만 서버에서 한 번 더 거릅니다. 이때 공백은 무시하고 비교합니다("클린코드"로 검색해도 실제 제목 "클린 코드"와 매치).
+`target=person`으로 특정 저자명을 검색하면, 카카오 API가 실제 저자가 다른 책까지 다수 섞어서 반환하는 경우가 있습니다(엄격한 부분일치가 아니라 느슨한 유사도 검색이기 때문). `app/api/books/route.ts`에서 `target`이 지정되면 카카오 응답을 받은 뒤 해당 필드에 검색어가 실제로 포함된 문서만 서버에서 한 번 더 거릅니다. 이때 공백은 무시하고 비교합니다("클린코드"로 검색해도 실제 제목 "클린 코드"와 매치).
 
 </details>
